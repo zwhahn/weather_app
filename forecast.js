@@ -9,10 +9,12 @@ switchUnitsBtn.addEventListener('click', function(event) {
     if (units == 'F') {
         units = 'C';
         populateDayDivs(weatherForecast_C);
+        switchUnitsBtn.textContent = 'F';
     }
     else {
         units = 'F';
         populateDayDivs(weatherForecast_F);
+        switchUnitsBtn.textContent = 'C';
     }
     console.log(`current units: ${units}`);
 })
