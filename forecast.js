@@ -11,7 +11,7 @@ async function getWeather () {
     console.log(weatherData);
     const currentTemp = weatherData.currentConditions.temp;
     const weatherForecast = []
-    for (let i =0; i < weatherData.days.length; i++){
+    for (let i =0; i < 5; i++){
         day = weatherData.days[i]
         weatherForecast.push({
             date: day.datetime,
@@ -23,11 +23,23 @@ async function getWeather () {
             icon: day.icon
         })
     }
-    console.log(weatherForecast);
+    return populateDayDivs(weatherForecast);
+}
+
+function populateDayDivs(weatherForecast){
+    const dayDivs = document.querySelectorAll(`.day`);
+    
+    weatherForecast.forEach(function(dayData, index) {
+        const dayDiv = dayDivs[index];
+        if (!dayDiv) return; // safeguard in case there are fewer divs than days
+        
+        dayDiv.querySelector('.date').textContent = dayData.date;
+        dayDiv.querySelector('.temp-max').textContent = dayData.tempMaxF;
+        dayDiv.querySelector('.temp-min').textContent = dayData.tempMinF;
+        dayDiv.querySelector('.conditions').textContent = dayData.conditions;
+    });
 }
 
 function fahrenheitToCelsius(fahrenheit){
     return (fahrenheit - 32) * 5 / 9;
 }
-
-getWeather();
