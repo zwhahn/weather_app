@@ -3,7 +3,24 @@ async function getWeather () {
     const weatherData = await response.json();
     console.log(weatherData);
     const currentTemp = weatherData.currentConditions.temp;
-    console.log(currentTemp);
+    const weatherForecast = []
+    for (let i =0; i < weatherData.days.length; i++){
+        day = weatherData.days[i]
+        weatherForecast.push({
+            date: day.datetime,
+            tempMaxF: Math.round(day.tempmax),
+            tempMinF: Math.round(day.tempmin),
+            tempMaxC: Math.round(fahrenheitToCelsius(day.tempmax)),
+            tempMinC: Math.round(fahrenheitToCelsius(day.tempmin)),
+            conditions: day.conditions,
+            icon: day.icon
+        })
+    }
+    console.log(weatherForecast);
+}
+
+function fahrenheitToCelsius(fahrenheit){
+    return (fahrenheit - 32) * 5 / 9;
 }
 
 getWeather();
