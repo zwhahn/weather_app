@@ -8,12 +8,12 @@ const switchUnitsBtn = document.getElementById('switch-units');
 switchUnitsBtn.addEventListener('click', function(event) {
     if (units == 'F') {
         units = 'C';
-        populateDayDivs(weatherForecast_C);
+        updateDayDivs(weatherForecast_C);
         switchUnitsBtn.textContent = 'F';
     }
     else {
         units = 'F';
-        populateDayDivs(weatherForecast_F);
+        updateDayDivs(weatherForecast_F);
         switchUnitsBtn.textContent = 'C';
     }
     console.log(`current units: ${units}`);
@@ -56,16 +56,41 @@ async function getWeather () {
 }
 
 function populateDayDivs(weatherForecast){
+    const flexContainer = document.getElementById(`flex-container`);
+    
+    weatherForecast.forEach(function(dayData, index) {
+        const dayDiv = document.createElement('div');
+        dayDiv.classList.add('day');
+
+        const dateDiv = document.createElement('div');
+        dateDiv.textContent = dayData.date;
+
+        const tempMaxDiv = document.createElement('div');
+        tempMaxDiv.textContent = dayData.tempMax;
+        tempMaxDiv.classList.add('temp-max');
+
+        const tempMinDiv = document.createElement('div');
+        tempMinDiv.textContent = dayData.tempMin;
+        tempMinDiv.classList.add('temp-min');
+
+        const conditionsDiv = document.createElement('div');
+        conditionsDiv.textContent = dayData.conditions;
+
+        dayDiv.append(dateDiv, tempMaxDiv, tempMinDiv, conditionsDiv);
+
+        flexContainer.append(dayDiv);
+    });
+}
+
+function updateDayDivs(weatherForecast){
     const dayDivs = document.querySelectorAll(`.day`);
     
     weatherForecast.forEach(function(dayData, index) {
         const dayDiv = dayDivs[index];
-        if (!dayDiv) return; // safeguard in case there are fewer divs than days
         
-        dayDiv.querySelector('.date').textContent = dayData.date;
         dayDiv.querySelector('.temp-max').textContent = dayData.tempMax;
         dayDiv.querySelector('.temp-min').textContent = dayData.tempMin;
-        dayDiv.querySelector('.conditions').textContent = dayData.conditions;
+
     });
 }
 
