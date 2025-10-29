@@ -1,5 +1,21 @@
 const params = new URLSearchParams(window.location.search);
 const place = params.get(`place`);
+let weatherForecast_F = []
+let weatherForecast_C = []
+var units = 'F';
+
+const switchUnitsBtn = document.getElementById('switch-units');
+switchUnitsBtn.addEventListener('click', function(event) {
+    if (units == 'F') {
+        units = 'C';
+        populateDayDivs(weatherForecast_C);
+    }
+    else {
+        units = 'F';
+        populateDayDivs(weatherForecast_F);
+    }
+    console.log(`current units: ${units}`);
+})
 
 if (place) {
     getWeather(place)
@@ -10,20 +26,31 @@ async function getWeather () {
     const weatherData = await response.json();
     console.log(weatherData);
     const currentTemp = weatherData.currentConditions.temp;
-    const weatherForecast = []
+    weatherForecast_F = []
+    weatherForecast_C = []
     for (let i =0; i < 5; i++){
         day = weatherData.days[i]
-        weatherForecast.push({
+        weatherForecast_F.push({
             date: day.datetime,
-            tempMaxF: Math.round(day.tempmax),
-            tempMinF: Math.round(day.tempmin),
-            tempMaxC: Math.round(fahrenheitToCelsius(day.tempmax)),
-            tempMinC: Math.round(fahrenheitToCelsius(day.tempmin)),
+            tempMax: Math.round(day.tempmax),
+            tempMin: Math.round(day.tempmin),
+            conditions: day.conditions,
+            icon: day.icon
+        })
+        weatherForecast_C.push({
+            date: day.datetime,
+            tempMax: Math.round(fahrenheitToCelsius(day.tempmax)),
+            tempMin: Math.round(fahrenheitToCelsius(day.tempmin)),
             conditions: day.conditions,
             icon: day.icon
         })
     }
-    return populateDayDivs(weatherForecast);
+    if (units == 'F'){
+        populateDayDivs(weatherForecast_F);
+    }
+    else {
+        populateDayDivs(weatherForecast_C)
+    }
 }
 
 function populateDayDivs(weatherForecast){
@@ -34,8 +61,8 @@ function populateDayDivs(weatherForecast){
         if (!dayDiv) return; // safeguard in case there are fewer divs than days
         
         dayDiv.querySelector('.date').textContent = dayData.date;
-        dayDiv.querySelector('.temp-max').textContent = dayData.tempMaxF;
-        dayDiv.querySelector('.temp-min').textContent = dayData.tempMinF;
+        dayDiv.querySelector('.temp-max').textContent = dayData.tempMax;
+        dayDiv.querySelector('.temp-min').textContent = dayData.tempMin;
         dayDiv.querySelector('.conditions').textContent = dayData.conditions;
     });
 }
