@@ -1,8 +1,53 @@
 const params = new URLSearchParams(window.location.search);
 const place = params.get(`place`);
+
+let forecastDays = 5;
 let weatherForecast_F = []
 let weatherForecast_C = []
 var units = 'F';
+
+
+if (place) {
+    getWeather(place)
+}
+
+
+async function getWeather () {
+    const response = await fetch(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${place}/?key=R8KYRLHHRZ6LPWGXCEJY4MLDX`);
+    const weatherData = await response.json();
+    // console.log(weatherData);
+    weatherForecast_F = [];
+    weatherForecast_C = [];
+    for (let i = 0; i < forecastDays; i++){
+        day = weatherData.days[i]
+        console.log(day);
+        weatherForecast_F.push({
+            weekday: getWeekday(day.datetime),
+            date: formatDate(day.datetime),
+            tempMax: Math.round(day.tempmax),
+            tempMin: Math.round(day.tempmin),
+            conditions: day.conditions,
+            icon: day.icon
+        })
+        // console.log(weatherForecast_F);
+        weatherForecast_C.push({
+            weekday: getWeekday(day.datetime),
+            date: day.datetime,
+            tempMax: Math.round(fahrenheitToCelsius(day.tempmax)),
+            tempMin: Math.round(fahrenheitToCelsius(day.tempmin)),
+            conditions: day.conditions,
+            icon: day.icon
+        })
+    }
+    if (units == 'F'){
+        populateDayDivs(weatherForecast_F);
+    }
+    else {
+        populateDayDivs(weatherForecast_C)
+    }
+    
+}
+
 
 const switchUnitsBtn = document.getElementById('switch-units');
 switchUnitsBtn.addEventListener('click', function(event) {
@@ -18,42 +63,6 @@ switchUnitsBtn.addEventListener('click', function(event) {
     }
 })
 
-if (place) {
-    getWeather(place)
-}
-
-async function getWeather () {
-    const response = await fetch(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${place}/?key=R8KYRLHHRZ6LPWGXCEJY4MLDX`);
-    const weatherData = await response.json();
-    console.log(weatherData);
-    weatherForecast_F = []
-    weatherForecast_C = []
-    for (let i =0; i < 5; i++){
-        day = weatherData.days[i]
-        weatherForecast_F.push({
-            weekday: getWeekday(day.datetime),
-            date: formatDate(day.datetime),
-            tempMax: Math.round(day.tempmax),
-            tempMin: Math.round(day.tempmin),
-            conditions: day.conditions,
-            icon: day.icon
-        })
-        weatherForecast_C.push({
-            date: day.datetime,
-            tempMax: Math.round(fahrenheitToCelsius(day.tempmax)),
-            tempMin: Math.round(fahrenheitToCelsius(day.tempmin)),
-            conditions: day.conditions,
-            icon: day.icon
-        })
-    }
-    if (units == 'F'){
-        populateDayDivs(weatherForecast_F);
-    }
-    else {
-        populateDayDivs(weatherForecast_C)
-    }
-    console.log(weatherForecast_F);
-}
 
 function populateDayDivs(weatherForecast){
     const flexContainer = document.getElementById(`flex-container`);
@@ -119,7 +128,8 @@ function fahrenheitToCelsius(fahrenheit){
 }
 
 function getWeekday(dateString) {
-    const date = new Date(dateString);
+    const [year, month, day] = dateString.split('-');  // split into individual numbers so JS interprets as local timezone
+    const date = new Date(year, month - 1, day);       // month is 0-indexed
     const dateWeekday = date.toLocaleDateString("en-US", {
             weekday: "long",
     });
@@ -137,7 +147,9 @@ function getWeekday(dateString) {
 }
 
 function formatDate(dateString) {
-    const date = new Date(dateString);
+    const [year, month, day] = dateString.split('-');  // split into individual numbers so JS interprets as local timezone
+    const date = new Date(year, month - 1, day);       // month is 0-indexed
+    console.log(date)
     return date.toLocaleDateString("en-US", {
         month: "short",
         day: "numeric"     
