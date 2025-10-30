@@ -18,6 +18,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    position: relative;
 }
 
 #flex-container {
@@ -32,15 +33,48 @@
     height: 100%;
     width: 19%;
     border: 2px solid var(--border-color);
-    border-radius: 5%;
-    padding: 10px;
+    border-radius: 20px;
+    padding: 60px 10px 10px 10px;
     line-height: 130%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
 }
+
+h2, .date {
+    align-self: center;
+}
+
 
 .data-holder {
     display: flex;
 }
 
 .data-title {
-    width: 30%;
+    width: 20%;
+}
+
+.icon-circle {
+    background-color: var(--main-background);
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    top: 0px;
+    border: 2px solid var(--border-color);
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon-img {
+    height: 80%;
+    width: 80%;
+}
+
+.conditions {
+    padding-top: 20px;
+
 }

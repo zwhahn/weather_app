@@ -72,12 +72,21 @@ function populateDayDivs(weatherForecast){
         dayDiv.classList.add('day');
 
 
+        const iconCircle = document.createElement('div');
+        iconCircle.classList.add('icon-circle');
+        const iconImg = document.createElement('img');
+        iconImg.src = `./assets/icons/${dayData.icon}.svg`;
+        iconImg.classList.add('icon-img');
+        iconCircle.append(iconImg);
+
+
         const weekdayDiv = document.createElement('h2');
         weekdayDiv.innerHTML = `${dayData.weekday}`;
 
 
         const dateDiv = document.createElement('div');
         dateDiv.textContent = dayData.date;
+        dateDiv.classList.add('date');
 
 
         const tempMaxHolder = document.createElement('div');
@@ -86,7 +95,7 @@ function populateDayDivs(weatherForecast){
         tempMaxTitle.innerHTML = 'High:'
         tempMaxTitle.classList.add('data-title')
         const tempMaxDiv = document.createElement('div');
-        tempMaxDiv.textContent = dayData.tempMax;
+        tempMaxDiv.textContent = `${dayData.tempMax}°${units}`;
         tempMaxDiv.classList.add('temp-max');
         tempMaxHolder.append(tempMaxTitle, tempMaxDiv);
 
@@ -97,16 +106,17 @@ function populateDayDivs(weatherForecast){
         tempMinTitle.innerHTML = 'Low:'
         tempMinTitle.classList.add('data-title')
         const tempMinDiv = document.createElement('div');
-        tempMinDiv.textContent = dayData.tempMin;
+        tempMinDiv.textContent = `${dayData.tempMin}°${units}`;
         tempMinDiv.classList.add('temp-min');
         tempMinHolder.append(tempMinTitle, tempMinDiv);
 
 
         const conditionsDiv = document.createElement('div');
         conditionsDiv.textContent = dayData.conditions;
+        conditionsDiv.classList.add('conditions');
 
-        dayDiv.append(weekdayDiv, dateDiv, conditionsDiv, tempMaxHolder, tempMinHolder);
 
+        dayDiv.append(iconCircle, weekdayDiv, dateDiv, conditionsDiv, tempMaxHolder, tempMinHolder);
         flexContainer.append(dayDiv);
     });
 }
