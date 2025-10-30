@@ -4,7 +4,7 @@ const place = params.get(`place`);
 let forecastDays = 5;
 let weatherForecast_F = []
 let weatherForecast_C = []
-var units = 'F';
+var unitSymbol = 'F';
 
 
 if (place) {
@@ -39,7 +39,7 @@ async function getWeather () {
             icon: day.icon
         })
     }
-    if (units == 'F'){
+    if (unitSymbol == 'F'){
         populateDayDivs(weatherForecast_F);
     }
     else {
@@ -49,17 +49,17 @@ async function getWeather () {
 }
 
 
-const switchUnitsBtn = document.getElementById('switch-units');
+const switchUnitsBtn = document.getElementById('switch-units-btn');
 switchUnitsBtn.addEventListener('click', function(event) {
-    if (units == 'F') {
-        units = 'C';
+    if (unitSymbol == 'F') {
+        unitSymbol = 'C';
         updateDayDivs(weatherForecast_C);
-        switchUnitsBtn.textContent = 'F';
+        switchUnitsBtn.textContent = 'Farenheit';
     }
     else {
-        units = 'F';
+        unitSymbol = 'F';
         updateDayDivs(weatherForecast_F);
-        switchUnitsBtn.textContent = 'C';
+        switchUnitsBtn.textContent = 'Celsius';
     }
 })
 
@@ -95,7 +95,7 @@ function populateDayDivs(weatherForecast){
         tempMaxTitle.innerHTML = 'High:'
         tempMaxTitle.classList.add('data-title')
         const tempMaxDiv = document.createElement('div');
-        tempMaxDiv.textContent = `${dayData.tempMax}°${units}`;
+        tempMaxDiv.textContent = `${dayData.tempMax}°${unitSymbol}`;
         tempMaxDiv.classList.add('temp-max');
         tempMaxHolder.append(tempMaxTitle, tempMaxDiv);
 
@@ -106,7 +106,7 @@ function populateDayDivs(weatherForecast){
         tempMinTitle.innerHTML = 'Low:'
         tempMinTitle.classList.add('data-title')
         const tempMinDiv = document.createElement('div');
-        tempMinDiv.textContent = `${dayData.tempMin}°${units}`;
+        tempMinDiv.textContent = `${dayData.tempMin}°${unitSymbol}`;
         tempMinDiv.classList.add('temp-min');
         tempMinHolder.append(tempMinTitle, tempMinDiv);
 
@@ -127,8 +127,8 @@ function updateDayDivs(weatherForecast){
     weatherForecast.forEach(function(dayData, index) {
         const dayDiv = dayDivs[index];
         
-        dayDiv.querySelector('.temp-max').textContent = dayData.tempMax;
-        dayDiv.querySelector('.temp-min').textContent = dayData.tempMin;
+        dayDiv.querySelector('.temp-max').textContent = `${dayData.tempMax}°${unitSymbol}`;
+        dayDiv.querySelector('.temp-min').textContent = `${dayData.tempMin}°${unitSymbol}`;
 
     });
 }
