@@ -48,7 +48,6 @@ async function getWeather () {
     else {
         populateDayDivs(weatherForecast_C)
     }
-    
 }
 
 
