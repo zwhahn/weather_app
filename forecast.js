@@ -11,6 +11,9 @@ if (place) {
     getWeather(place)
 }
 
+const forecastTitle = document.getElementById('forecast-title');
+forecastTitle.textContent = `5-Day Forecast of ${place}`;
+
 
 async function getWeather () {
     const response = await fetch(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${place}/?key=R8KYRLHHRZ6LPWGXCEJY4MLDX`);
@@ -54,12 +57,12 @@ switchUnitsBtn.addEventListener('click', function(event) {
     if (unitSymbol == 'F') {
         unitSymbol = 'C';
         updateDayDivs(weatherForecast_C);
-        switchUnitsBtn.textContent = 'Farenheit';
+        switchUnitsBtn.textContent = 'F°';
     }
     else {
         unitSymbol = 'F';
         updateDayDivs(weatherForecast_F);
-        switchUnitsBtn.textContent = 'Celsius';
+        switchUnitsBtn.textContent = 'C°';
     }
 })
 
