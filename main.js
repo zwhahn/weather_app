@@ -1,4 +1,4 @@
-document.getElementById('place_form').addEventListener('submit', function(event) {
+document.getElementById('place-form').addEventListener('submit', function(event) {
     event.preventDefault();
     const place = document.getElementById('place').value;
 

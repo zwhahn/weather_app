@@ -53,7 +53,7 @@ async function getWeather () {
 
 
 const switchUnitsBtn = document.getElementById('switch-units-btn');
-switchUnitsBtn.addEventListener('click', function(event) {
+switchUnitsBtn.addEventListener('click', function() {
     if (unitSymbol == 'F') {
         unitSymbol = 'C';
         updateDayDivs(weatherForecast_C);
@@ -64,6 +64,12 @@ switchUnitsBtn.addEventListener('click', function(event) {
         updateDayDivs(weatherForecast_F);
         switchUnitsBtn.textContent = 'C°';
     }
+})
+
+
+const backBtn = document.getElementById('back-btn');
+backBtn.addEventListener('click', function() {
+    window.location.href = `index.html`;
 })
 
 
@@ -78,7 +84,7 @@ function populateDayDivs(weatherForecast){
         const iconCircle = document.createElement('div');
         iconCircle.classList.add('icon-circle');
         const iconImg = document.createElement('img');
-        iconImg.src = `./assets/icons/${dayData.icon}.svg`;
+        iconImg.src = `./assets/weather-icons/${dayData.icon}.svg`;
         iconImg.classList.add('icon-img');
         iconCircle.append(iconImg);
 
