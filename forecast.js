@@ -30,16 +30,14 @@ async function getWeather () {
             tempMax: Math.round(day.tempmax),
             tempMin: Math.round(day.tempmin),
             conditions: day.conditions,
-            icon: day.icon
+            icon: day.icon,
+            precipProb: day.precipprob,
+            humidity: Math.round(day.humidity)
         })
         // console.log(weatherForecast_F);
         weatherForecast_C.push({
-            weekday: getWeekday(day.datetime),
-            date: day.datetime,
             tempMax: Math.round(fahrenheitToCelsius(day.tempmax)),
             tempMin: Math.round(fahrenheitToCelsius(day.tempmin)),
-            conditions: day.conditions,
-            icon: day.icon
         })
     }
     if (unitSymbol == 'F'){
@@ -118,13 +116,35 @@ function populateDayDivs(weatherForecast){
         tempMinDiv.classList.add('temp-min');
         tempMinHolder.append(tempMinTitle, tempMinDiv);
 
+        const precipProbHolder = document.createElement('div');
+        precipProbHolder.classList.add('data-holder');
+        const precipProbTitle = document.createElement('div');
+        precipProbTitle.innerHTML = 'Precip Prob:'
+        precipProbTitle.classList.add('data-title')
+        precipProbTitle.classList.add('data-title-precipprob')
+        const precipProbDiv = document.createElement('div');
+        precipProbDiv.textContent = `${dayData.precipProb}%`;
+        precipProbDiv.classList.add('temp-min');
+        precipProbHolder.append(precipProbTitle, precipProbDiv);
+
+        const humidityHolder = document.createElement('div');
+        humidityHolder.classList.add('data-holder');
+        const humidityTitle = document.createElement('div');
+        humidityTitle.innerHTML = 'Humidity:'
+        humidityTitle.classList.add('data-title')
+        humidityTitle.classList.add('data-title-humidity')
+        const humidityDiv = document.createElement('div');
+        humidityDiv.textContent = `${dayData.humidity}%`;
+        humidityDiv.classList.add('temp-min');
+        humidityHolder.append(humidityTitle, humidityDiv);
+
 
         const conditionsDiv = document.createElement('div');
         conditionsDiv.textContent = dayData.conditions;
         conditionsDiv.classList.add('conditions');
 
 
-        dayDiv.append(iconCircle, weekdayDiv, dateDiv, conditionsDiv, tempMaxHolder, tempMinHolder);
+        dayDiv.append(iconCircle, weekdayDiv, dateDiv, conditionsDiv, tempMaxHolder, tempMinHolder, precipProbHolder, humidityHolder);
         flexContainer.append(dayDiv);
     });
 }

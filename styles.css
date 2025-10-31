@@ -96,6 +96,14 @@ h2, .date {
     width: 20%;
 }
 
+.data-title-precipprob {
+    width: 42%;
+}
+
+.data-title-humidity {
+    width: 32%;
+}
+
 .icon-circle {
     background-color: var(--main-background);
     width: 100px;
